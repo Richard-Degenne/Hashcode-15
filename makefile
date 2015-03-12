@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=--std=c++11 -Wall
 LDFLAGS=
-SRCS=
+SRCS=Row.cpp Server.cpp Slot.cpp Datacenter.cpp
 OBJS=$(SRCS:.cpp=.o)
 
 all: main.out
