@@ -12,6 +12,8 @@ public:
 	int group;
 
 	Server(int _id, int _size, int _cpu, int _group);
+
+	float getRatio();
 };
 
 #endif
