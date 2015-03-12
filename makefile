@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=--std=c++11 -Wall
+CFLAGS=-c --std=c++11 -Wall
 LDFLAGS=
 SRCS=Row.cpp Server.cpp Slot.cpp Datacenter.cpp
 OBJS=$(SRCS:.cpp=.o)
