@@ -54,7 +54,21 @@ Datacenter::Datacenter(string const& path)
 		int size = stoi(line);
 		getline(f, line, ' ');
 		int cpu = stoi(line);
-		servers[i] = new Server(size, cpu, -1);
+		servers[i] = new Server(i, size, cpu, -1);
 	}
 	cout<<"Construction du Datacenter finie"<<endl;
+}
+
+void Datacenter::print()
+{
+	for(int i =0; i<rows.size(); ++i)
+	{
+		for(int j=0; j<rows[i]->slots.size(); ++j)
+		{
+			int const state = rows[i]->slots[j]->state;
+			char c = (state) ? ((state == 1) ? '##': '##' ) : '.';
+			cout<<c; 
+		}
+		cout<<endl;
+	}
 }

@@ -13,6 +13,9 @@ class Datacenter {
 
 public:
 	Datacenter(std::string const& path);
+
+	void print();
+
 	int nbGroups;
 	std::vector<Row*> rows;
 	std::vector<Server*> servers;
