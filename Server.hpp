@@ -6,11 +6,12 @@
 
 class Server {
 public:
+	int id;
 	int size;
 	int cpu;
 	int group;
 
-	Server(int _size, int _cpu, int _group);
+	Server(int _id, int _size, int _cpu, int _group);
 };
 
 #endif
