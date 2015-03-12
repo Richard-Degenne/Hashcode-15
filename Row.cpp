@@ -15,5 +15,5 @@ Row::Row() {
  * Adds a new slot to the row.
  */
 void Row::add(Slot* slot) {
-	slots.insert(slot);
+	slots.push_back(slot);
 }
