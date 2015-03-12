@@ -15,6 +15,7 @@ public:
 	Datacenter(std::string const& path);
 
 	void print();
+	void solve1();	
 
 	int nbGroups;
 	std::vector<Row*> rows;

@@ -1,6 +1,8 @@
 #include "Datacenter.hpp"
 #include <sstream>
 #include <fstream>
+#include <algorithm>
+
 #include "Server.hpp"
 #include "Row.hpp"
 #include "Slot.hpp"
@@ -52,11 +54,21 @@ Datacenter::Datacenter(string const& path)
 	{
 		getline(f, line, ' ');
 		int size = stoi(line);
-		getline(f, line, ' ');
+		getline(f, line);
 		int cpu = stoi(line);
 		servers[i] = new Server(i, size, cpu, -1);
 	}
 	cout<<"Construction du Datacenter finie"<<endl;
+}
+
+void Datacenter::solve1()
+{
+	auto l =  [] (Server* s1, Server* s2){
+	float const r1 = static_cast<float>(s1->cpu)/s1->size;
+	float const r2 = static_cast<float>(s2->cpu)/s2->size;
+	return r1<r2;
+	};
+	sort(servers.begin(), servers.end(), l);
 }
 
 void Datacenter::print()
@@ -72,3 +84,5 @@ void Datacenter::print()
 		cout<<endl;
 	}
 }
+
+
