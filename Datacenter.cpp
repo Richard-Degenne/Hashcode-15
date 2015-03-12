@@ -61,14 +61,48 @@ Datacenter::Datacenter(string const& path)
 	cout<<"Construction du Datacenter finie"<<endl;
 }
 
+/**
+ * Sorts every servers by their ratio, best ratio first.
+ */
 void Datacenter::solve1()
 {
+	int currentRow = 0;
+	int unplaced = 0;
+	int nbPlaced = 0;
+
 	auto l =  [] (Server* s1, Server* s2){
 	float const r1 = static_cast<float>(s1->cpu)/s1->size;
 	float const r2 = static_cast<float>(s2->cpu)/s2->size;
-	return r1<r2;
+	return r1>r2;
 	};
 	sort(servers.begin(), servers.end(), l);
+	// Servers sorted
+	
+	for(auto server : servers) { // ! server => Server*
+		int firstRow = currentRow;
+		bool placed = false;
+		
+		do {
+			cout << "Row " << currentRow << ": First slot " << rows[currentRow]->getFirstFreeSlot() << endl;
+			if(!rows[currentRow]->canPlace(server, rows[currentRow]->getFirstFreeSlot())) {
+				cout << "Not enough space..." << endl;
+			}
+			else {
+				rows[currentRow]->place(server, rows[currentRow]->getFirstFreeSlot());
+				placed = true;
+				nbPlaced++;
+			}
+			if(++currentRow == rows.size()) {
+				currentRow = 0;
+			}
+			
+		} while (!placed && currentRow != firstRow);
+		if(!placed) {
+			cout << "SERVER NOT PLACED!" << endl;
+			unplaced++;
+		}
+	}
+	cout << "Totals: Placed " << nbPlaced << " / Unplaced " << unplaced << endl;
 }
 
 void Datacenter::print()
@@ -78,7 +112,18 @@ void Datacenter::print()
 		for(int j=0; j<rows[i]->slots.size(); ++j)
 		{
 			int const state = rows[i]->slots[j]->state;
-			char c = (state) ? ((state == 1) ? '##': '##' ) : '.';
+			char c;
+			switch(state) {
+				case FREE:
+					c='.';
+					break;
+				case OCCUPIED:
+					c='+';
+					break;
+				case BROKEN:
+					c='#';
+					break;
+			}
 			cout<<c; 
 		}
 		cout<<endl;

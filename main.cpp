@@ -16,5 +16,6 @@ int main(int argc, char* argv[]) {
 	Datacenter d(argv[1]);
 	d.print();
 	d.solve1();
+	d.print();
 	return 0;
 }

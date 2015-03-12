@@ -23,9 +23,14 @@ void Row::add(Slot* slot) {
  * Fetches the first free slot. Returns its index.
  */
 int Row::getFirstFreeSlot() {
-	int i=-1;
-	while(slots[++i]->state != FREE);
-	return i;
+	int i=0;
+	cout << "Size: " << slots.size() << endl;
+	while(i<slots.size()) {
+		if(slots[i]->state == FREE)
+			return i;
+		++i;
+	}
+	return -1;
 }
 
 
@@ -33,6 +38,14 @@ int Row::getFirstFreeSlot() {
  * Checks whether every cell to be occupied by `s' is free.
  */
 bool Row::canPlace(Server* s, int i) {
+	if(i==-1) {
+		cout << "No available space..." << endl;
+		return false;
+	}
+	if(i+s->size > slots.size()) {
+		cout << "Too close to the end of the row..." << endl;
+		return false;
+	}
 	for(int j=i ; j<i+s->size ; ++j) {
 		if(slots[j]->state != FREE) {
 			return false;
@@ -52,6 +65,7 @@ bool Row::place(Server* s, int i) {
 	
 	for(int j=i ; j<i+s->size ; ++j) {
 		slots[j]->server = s;
+		slots[j]->state = OCCUPIED;
 	}
 	return true;
 }
