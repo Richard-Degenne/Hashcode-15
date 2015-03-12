@@ -24,7 +24,6 @@ void Row::add(Slot* slot) {
  */
 int Row::getFirstFreeSlot() {
 	int i=0;
-	cout << "Size: " << slots.size() << endl;
 	while(i<slots.size()) {
 		if(slots[i]->state == FREE)
 			return i;
@@ -39,11 +38,9 @@ int Row::getFirstFreeSlot() {
  */
 bool Row::canPlace(Server* s, int i) {
 	if(i==-1) {
-		cout << "No available space..." << endl;
 		return false;
 	}
 	if(i+s->size > slots.size()) {
-		cout << "Too close to the end of the row..." << endl;
 		return false;
 	}
 	for(int j=i ; j<i+s->size ; ++j) {
@@ -66,6 +63,7 @@ bool Row::place(Server* s, int i) {
 	for(int j=i ; j<i+s->size ; ++j) {
 		slots[j]->server = s;
 		slots[j]->state = OCCUPIED;
+		s->slot = i;
 	}
 	return true;
 }

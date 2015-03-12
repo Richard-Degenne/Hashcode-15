@@ -16,6 +16,7 @@ public:
 
 	void print();
 	void solve1();	
+	void out();
 
 	int nbGroups;
 	std::vector<Row*> rows;

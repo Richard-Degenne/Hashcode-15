@@ -10,6 +10,8 @@ public:
 	int size;
 	int cpu;
 	int group;
+	int row;
+	int slot;
 
 	Server(int _id, int _size, int _cpu, int _group);
 

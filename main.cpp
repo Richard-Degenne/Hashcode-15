@@ -17,5 +17,6 @@ int main(int argc, char* argv[]) {
 	d.print();
 	d.solve1();
 	d.print();
+	d.out();
 	return 0;
 }

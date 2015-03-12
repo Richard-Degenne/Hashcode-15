@@ -11,7 +11,7 @@ using namespace std;
 
 Datacenter::Datacenter(string const& path)
 {
-	cout<<"Construction du Datacenter"<<endl;
+	//cerr<<"Construction du Datacenter"<<endl;
 	ifstream f(path);
 	string line;
 	getline(f, line, ' ');
@@ -25,9 +25,9 @@ Datacenter::Datacenter(string const& path)
 	getline(f, line);
 	int nbServs = stoi(line);
 	
-	cout<<nbRows<<" "<<nbSlots<<" "<<nbBroken<<" "<<nbGroups<<" "<<nbServs<<endl;	
+	//cerr<<nbRows<<" "<<nbSlots<<" "<<nbBroken<<" "<<nbGroups<<" "<<nbServs<<endl;	
 
-	cout<<"Rows"<<endl;
+	//cerr<<"Rows"<<endl;
 	rows.resize(nbRows);
 	for(int i=0; i<nbRows; ++i)
 	{
@@ -37,7 +37,7 @@ Datacenter::Datacenter(string const& path)
 			rows[i]->slots[j] = new Slot(FREE, NULL);
 	}
 
-	cout<<"Broken"<<endl;
+	//cerr<<"Broken"<<endl;
 	for(int i =0; i<nbBroken; ++i)
 	{
 		int x, y;
@@ -47,7 +47,7 @@ Datacenter::Datacenter(string const& path)
 		y = stoi(line);
 		rows[x]->slots[y]->state = BROKEN;	
 	}
-	cout<<"Servers"<<endl;
+	//cerr<<"Servers"<<endl;
 	
 	servers.resize(nbServs);
 	for(int i=0; i<nbServs; ++i)
@@ -58,7 +58,7 @@ Datacenter::Datacenter(string const& path)
 		int cpu = stoi(line);
 		servers[i] = new Server(i, size, cpu, -1);
 	}
-	cout<<"Construction du Datacenter finie"<<endl;
+	//cerr<<"Construction du Datacenter finie"<<endl;
 }
 
 /**
@@ -83,12 +83,13 @@ void Datacenter::solve1()
 		bool placed = false;
 		
 		do {
-			cout << "Row " << currentRow << ": First slot " << rows[currentRow]->getFirstFreeSlot() << endl;
+			//cerr << "Row " << currentRow << ": First slot " << rows[currentRow]->getFirstFreeSlot() << endl;
 			if(!rows[currentRow]->canPlace(server, rows[currentRow]->getFirstFreeSlot())) {
-				cout << "Not enough space..." << endl;
+				//cerr << "Not enough space..." << endl;
 			}
 			else {
 				rows[currentRow]->place(server, rows[currentRow]->getFirstFreeSlot());
+				server->row = currentRow;
 				placed = true;
 				nbPlaced++;
 			}
@@ -98,11 +99,21 @@ void Datacenter::solve1()
 			
 		} while (!placed && currentRow != firstRow);
 		if(!placed) {
-			cout << "SERVER NOT PLACED!" << endl;
+			//cerr << "SERVER NOT PLACED!" << endl;
 			unplaced++;
 		}
 	}
-	cout << "Totals: Placed " << nbPlaced << " / Unplaced " << unplaced << endl;
+	//cerr << "Totals: Placed " << nbPlaced << " / Unplaced " << unplaced << endl;
+	int currentGroup = 0;
+	for(auto row : rows) {
+		for(auto slot : row->slots) {
+			if(slot->state == OCCUPIED && slot->server->group == -1) {
+				//cerr << "Group: " << currentGroup << endl;
+				slot->server->group = currentGroup;
+				currentGroup = (currentGroup+1) % nbGroups;
+			}
+		}
+	}
 }
 
 void Datacenter::print()
@@ -118,16 +129,31 @@ void Datacenter::print()
 					c='.';
 					break;
 				case OCCUPIED:
-					c='+';
+					c= (rows[i]->slots[j]->server->group%10) + 48;
 					break;
 				case BROKEN:
 					c='#';
 					break;
 			}
-			cout<<c; 
+			cerr<<c; 
 		}
-		cout<<endl;
+		cerr<<endl;
 	}
 }
 
+void Datacenter::out() {
+	//retri
+	auto l =  [] (Server* s1, Server* s2){
+		return s1->id<s2->id;	
+	};
+	sort(servers.begin(), servers.end(), l);
 
+	//Affichage
+	for (auto s : servers)
+	{
+		if(s->slot!=-1)
+			cout<<s->row<<" "<<s->slot<<" "<<s->group<<endl;
+		else
+			cout<<'x'<<endl;
+	}
+}
