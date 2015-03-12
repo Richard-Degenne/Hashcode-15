@@ -7,7 +7,7 @@ using namespace std;
  * Default constructor
  */
 Row::Row() {
-	cout << "Constructing row..." << endl;
+//	cout << "Constructing row..." << endl;
 }
 
 

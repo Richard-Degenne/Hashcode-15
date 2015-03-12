@@ -6,12 +6,13 @@
  */
 
 #include <iostream>
-#include <cstdlib>
+#include "Datacenter.hpp"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
 	cout << "==== The Fellowship of the Toguyen_Ring ====" << endl << endl;
 
-	return EXIT_SUCCESS;
+	Datacenter d(argv[1]);
+	return 0;
 }
