@@ -21,7 +21,8 @@ Datacenter::Datacenter(string const& path)
 	getline(f, line, ' ');
 	int nbBroken = stoi(line); 
 	getline(f, line, ' ');
-	int nbGroups = stoi(line);
+	nbGroups = stoi(line);
+	cerr<<nbGroups<<" "<<line<<endl;
 	getline(f, line);
 	int nbServs = stoi(line);
 	
@@ -104,13 +105,14 @@ void Datacenter::solve1()
 		}
 	}
 	//cerr << "Totals: Placed " << nbPlaced << " / Unplaced " << unplaced << endl;
-	int currentGroup = 0;
+	cerr<<nbGroups<<endl;
+	int currentGroup = 6;
 	for(auto row : rows) {
 		for(auto slot : row->slots) {
 			if(slot->state == OCCUPIED && slot->server->group == -1) {
-				//cerr << "Group: " << currentGroup << endl;
+				cerr << "Group: " << currentGroup <<" "<<nbGroups<< endl;
 				slot->server->group = currentGroup;
-				currentGroup = (currentGroup+1) % nbGroups;
+				currentGroup = (currentGroup+1) % 45;
 			}
 		}
 	}
